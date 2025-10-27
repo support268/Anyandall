@@ -1,59 +1,179 @@
 <!DOCTYPE html>
 <html lang="da">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Any & All — Everything Answered</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Any & All — AI-receptionen der altid svarer</title>
+  <meta name="description" content="Any & All — AI der tager imod dine opkald, beskeder og kunder 24/7. Ingen ventetid. Ingen tabte kunder. Everything answered." />
   <style>
-    body {
-      margin: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Inter", Arial, sans-serif;
-      background-color: #0a0a0a;
-      color: #ffffff;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      text-align: center;
-      padding: 24px;
+    :root{
+      --bg:#0a0a0a; --fg:#ffffff; --muted:#b5b5b5; --accent:#2BB3A3; --border:#222; --card:#111;
     }
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5rem;
-      letter-spacing: -0.5px;
-    }
-    p {
-      color: #b5b5b5;
-      font-size: 1.1rem;
-      max-width: 520px;
-      margin-bottom: 2rem;
-      line-height: 1.6;
-    }
-    a.button {
-      color: #0a0a0a;
-      background-color: #2BB3A3;
-      text-decoration: none;
-      padding: 0.9rem 1.4rem;
-      border-radius: 10px;
-      font-weight: 600;
-      border: 1px solid #2BB3A3;
-      transition: transform 0.12s ease;
-    }
-    a.button:hover { transform: translateY(-1px); }
-    footer {
-      margin-top: 40px;
-      font-size: 0.9rem;
-      color: #6b6b6b;
-    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:-apple-system,BlinkMacSystemFont,"Inter",Arial,sans-serif;line-height:1.55}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    header{padding:24px 0 12px;border-bottom:1px solid var(--border);margin-bottom:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,var(--accent),#6be3d7)}
+    .brand h1{font-size:20px;margin:0;font-weight:700;letter-spacing:.2px}
+    .brand small{color:var(--muted)}
+
+    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:center;padding:24px 0}
+    @media(max-width:880px){.hero{grid-template-columns:1fr}}
+    .kicker{color:var(--accent);font-weight:600;letter-spacing:.4px;text-transform:uppercase;font-size:.85rem}
+    .title{font-size:2.4rem;letter-spacing:-.8px;margin:.25rem 0 0}
+    .subtitle{color:var(--muted);font-size:1.15rem;margin:.75rem 0 1.25rem;max-width:52ch}
+    .cta{display:inline-block;background:var(--accent);color:#0a0a0a;text-decoration:none;padding:0.95rem 1.25rem;border-radius:12px;font-weight:700;border:1px solid var(--accent);transition:transform .12s ease}
+    .cta:hover{transform:translateY(-1px)}
+    .badge{display:inline-flex;align-items:center;gap:8px;background:#0f1817;border:1px solid #14332f;color:#9de7de;padding:6px 10px;border-radius:999px;font-size:.82rem;margin-top:10px}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px}
+
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:16px}
+    @media(max-width:880px){.grid{grid-template-columns:1fr}}
+    h3{margin:0 0 .35rem;font-size:1.05rem}
+    p{margin:.25rem 0 .75rem;color:var(--muted)}
+
+    .contact{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:28px}
+    @media(max-width:880px){.contact{grid-template-columns:1fr}}
+    label{display:block;font-weight:600;margin-bottom:6px}
+    input,textarea{width:100%;background:#0e0e0e;color:var(--fg);border:1px solid #1b1b1b;border-radius:10px;padding:.8rem .9rem;font-size:1rem}
+    textarea{min-height:140px;resize:vertical}
+    .hint{color:#8a8a8a;font-size:.9rem}
+    .submit{margin-top:8px}
+    .foot{border-top:1px solid var(--border);margin-top:28px;padding:18px 0;color:#757575;font-size:.9rem;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+    .success{display:none;text-align:center;padding:42px 18px}
+    .success h2{margin:0 0 .5rem}
+    .success p{max-width:56ch;margin:0 auto;color:var(--muted)}
+    .hide{display:none !important}
   </style>
 </head>
 <body>
-  <h1>Any & All</h1>
-  <p>AI der tager imod dine opkald, beskeder og kunder — 24/7.<br>
-     Ingen ventetid. Ingen tabte kunder.<br>
-     <strong>Everything answered.</strong></p>
-  <a class="button" href="mailto:support@anyandall.dk">Kontakt os</a>
-  <footer>© 2025 Any & All — Alle rettigheder forbeholdes</footer>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Any & All</h1>
+          <small>Everything answered.</small>
+        </div>
+      </div>
+    </header>
+
+    <!-- SUCCESS STATE (vises efter submit med ?sent i URL'en) -->
+    <section id="success" class="success card">
+      <h2>Tak for din henvendelse!</h2>
+      <p>Vores receptionist <strong>Laura</strong> har modtaget din besked og vender tilbage senest næste arbejdsdag. Har du brug for hjælp nu, kan du skrive direkte til <a href="mailto:support@anyandall.dk">support@anyandall.dk</a>.</p>
+      <p style="margin-top:14px;"><a class="cta" href="/">Tilbage til forsiden</a></p>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main id="main">
+      <section class="hero">
+        <div>
+          <div class="kicker">AI-reception • 24/7</div>
+          <h2 class="title">AI-receptionen, der altid svarer — så du aldrig mister et opkald</h2>
+          <p class="subtitle">
+            Any & All tager imod dine opkald, beskeder og kunder — døgnet rundt. Vi præsenterer os i dit navn, svarer på almindelige spørgsmål (åbningstider, priser, booking) og sender beskeder videre til dig på e-mail. Ingen ventetid. Ingen tabte kunder. Bare professionel service – hver gang.
+          </p>
+          <a href="#kontakt" class="cta">Kontakt vores receptionist, Laura – hun tager altid telefonen</a>
+          <div class="badge">🔒 Datasikkerhed • DK-hosted DNS • GDPR-first</div>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:.5rem">Hvad kan vi svare på fra dag 1?</h3>
+          <p>Vi henter svar fra din egen hjemmeside og de fakta du giver os. Vi kan fx:</p>
+          <ul style="color:var(--muted);padding-left:18px;margin:.35rem 0 0">
+            <li>Give åbningstider, priser og vejvisning</li>
+            <li>Notere beskeder og videresende pr. e-mail</li>
+            <li>Forhåndskvalificere forespørgsler (navn, telefon, emne)</li>
+          </ul>
+          <p class="hint" style="margin-top:.75rem">Vil du have booking eller CRM-integration senere? Det kan vi koble på, når du er klar.</p>
+        </div>
+      </section>
+
+      <section>
+        <div class="grid">
+          <div class="card">
+            <h3>For håndværkere & klinikker</h3>
+            <p>Du arbejder — vi svarer. Kunden får svar nu, ikke senere. Vi sender beskeden pænt samlet til din mail.</p>
+          </div>
+          <div class="card">
+            <h3>For konsulenter & små teams</h3>
+            <p>Virker som en professionel receptionist uden fast lønudgift. Skaler op og ned efter behov.</p>
+          </div>
+          <div class="card">
+            <h3>For alle, der vil virke større</h3>
+            <p>En varm velkomst og klare svar — hver gang. Kunderne oplever, at I er til stede 24/7.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="kontakt" class="contact">
+        <div class="card">
+          <h3 style="margin-bottom:.75rem">Skriv til os — Laura vender tilbage</h3>
+          <form action="https://formsubmit.co/support@anyandall.dk" method="POST">
+            <!-- FormSubmit indstillinger -->
+            <input type="hidden" name="_subject" value="Ny henvendelse fra anyandall.dk" />
+            <input type="hidden" name="_captcha" value="true" />
+            <input type="hidden" name="_template" value="box" />
+            <input type="hidden" name="_next" value="https://www.anyandall.dk/?sent=1" />
+            <!-- Honeypot (anti-spam) -->
+            <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off" />
+            <!-- Felter -->
+            <label for="navn">Navn</label>
+            <input id="navn" name="Navn" placeholder="Dit navn" required />
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px">
+              <div>
+                <label for="email">E-mail</label>
+                <input id="email" type="email" name="E-mail" placeholder="din@adresse.dk" required />
+              </div>
+              <div>
+                <label for="tlf">Telefon</label>
+                <input id="tlf" name="Telefon" placeholder="+45 12 34 56 78" />
+              </div>
+            </div>
+            <div style="margin-top:10px">
+              <label for="besked">Hvordan kan vi hjælpe?</label>
+              <textarea id="besked" name="Besked" placeholder="Fortæl kort hvad du har brug for …"></textarea>
+            </div>
+            <div class="submit">
+              <button class="cta" type="submit">Send til Laura</button>
+            </div>
+            <p class="hint" style="margin-top:10px">Ved at sende accepterer du, at vi må kontakte dig på baggrund af din henvendelse. Vi gemmer kun nødvendige oplysninger og deler dem aldrig med tredjepart.</p>
+          </form>
+        </div>
+        <div class="card">
+          <h3 style="margin-bottom:.5rem">Hvordan virker det i praksis?</h3>
+          <ol style="margin:.25rem 0 0 18px;color:var(--muted)">
+            <li>Du giver os din hjemmeside og de vigtigste svar (åbningstider, priser m.m.).</li>
+            <li>Vi sætter din AI-receptionist op i dit navn.</li>
+            <li>Opkald og beskeder håndteres 24/7 – du får beskederne sendt til din mail.</li>
+          </ol>
+          <p class="hint" style="margin-top:.75rem">Starter simpelt. Udvid senere med booking, kalender, SMS eller CRM-integration.</p>
+          <div style="margin-top:10px">
+            <a class="cta" href="mailto:support@anyandall.dk">Eller skriv direkte: support@anyandall.dk</a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="foot">
+      <div>© 2025 Any & All — Alle rettigheder forbeholdes</div>
+      <div>support@anyandall.dk • www.anyandall.dk</div>
+    </footer>
+  </div>
+
+  <script>
+    // Vis "Tak"-skærm hvis brugeren kommer fra formularen (?sent=1)
+    (function(){
+      const params = new URLSearchParams(window.location.search);
+      if(params.get('sent') === '1'){
+        document.getElementById('main').classList.add('hide');
+        document.getElementById('success').style.display = 'block';
+        window.history.replaceState({}, document.title, "/");
+      }
+    })();
+  </script>
 </body>
 </html>
+
+
